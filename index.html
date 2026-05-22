@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="444 Industry — Streetwear. Music. Culture. Ghana.">
+<title>444 Industry</title>
+
+<!-- Circular-like fonts: DM Sans (closest open-source to Spotify Circular) + Familjen Grotesk for display -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,300;1,9..40,400&family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#0a0a0a;
+  --bg2:#111111;
+  --bg3:#181818;
+  --bg4:#282828;
+  --green:#1db954;
+  --green-bright:#1ed760;
+  --green-dim:rgba(29,185,84,0.15);
+  --green-mid:rgba(29,185,84,0.35);
+  --white:#ffffff;
+  --off:#b3b3b3;
+  --dim:#535353;
+  --font:'DM Sans','Helvetica Neue',sans-serif;
+  --font-display:'Familjen Grotesk','DM Sans',sans-serif;
+}
+
+html{scroll-behavior:smooth;overflow-x:hidden}
+
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--white);
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor{
+  position:fixed;
+  width:12px;height:12px;
+  background:var(--green);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s,width 0.3s,height 0.3s,background 0.3s;
+  mix-blend-mode:screen;
+}
+.cursor-ring{
+  position:fixed;
+  width:36px;height:36px;
+  border:1.5px solid rgba(29,185,84,0.5);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:99998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.15s ease,width 0.3s,height 0.3s,border-color 0.3s;
+}
+body:has(a:hover) .cursor,
+body:has(button:hover) .cursor{width:20px;height:20px;background:var(--green-bright)}
+body:has(a:hover) .cursor-ring,
+body:has(button:hover) .cursor-ring{width:52px;height:52px;border-color:var(--green)}
+
+/* ── BACKGROUND IMAGE STAGE ── */
+.bg-stage{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
+.bg-panel{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 1.4s cubic-bezier(0.4,0,0.2,1);
+  will-change:opacity;
+}
+.bg-panel.active{opacity:1}
+.bg-panel img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center top;
+  filter:brightness(0.22) saturate(1.6);
+  transform:scale(1.05);
+  transition:transform 9s ease;
+}
+.bg-panel.active img{transform:scale(1)}
+
+/* Spotify-style color wash per slide */
+.bg-panel::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  mix-blend-mode:color;
+  opacity:0.18;
+}
+.bg-panel:nth-child(1)::after{background:#1db954}
+.bg-panel:nth-child(2)::after{background:#1e3264}
+.bg-panel:nth-child(3)::after{background:#8d67ab}
+.bg-panel:nth-child(4)::after{background:#e61e32}
+
+/* Bottom vignette */
+.bg-stage::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:55%;
+  background:linear-gradient(to top,var(--bg) 0%,transparent 100%);
+  z-index:1;
+  pointer-events:none;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:800;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 2rem;
+  background:rgba(10,10,10,0.85);
+  backdrop-filter:blur(32px) saturate(1.8);
+  -webkit-backdrop-filter:blur(32px) saturate(1.8);
+}
+nav::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:2rem;right:2rem;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--dim),transparent);
+}
+
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  text-decoration:none;
+}
+.nav-logo-mark{
+  width:38px;height:38px;
+  background:var(--green);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font);
+  font-size:0.75rem;
+  font-weight:900;
+  color:var(--bg);
+  letter-spacing:0.05em;
+  flex-shrink:0;
+  transition:transform 0.3s,background 0.3s;
+}
+.nav-logo:hover .nav-logo-mark{
+  transform:scale(1.08) rotate(5deg);
+  background:var(--green-bright);
+}
+.nav-logo-text{
+  font-family:var(--font);
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--white);
+}
+.nav-logo-text span{color:var(--green)}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:2rem;
+  list-style:none;
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+.nav-links a{
+  font-family:var(--font);
+  font-size:0.72rem;
+  font-weight:600;
+  letter-spacing:0.04em;
+  color:var(--off);
+  text-decoration:none;
+  transition:color 0.2s;
+  padding:0.3rem 0;
+  position:relative;
+}
+.nav-links a::after{
+  content:'';
+  position:absolute;
+  bottom:-2px;left:0;right:0;
+  height:2px;
+  background:var(--green);
+  transform:scaleX(0);
+  transition:transform 0.25s;
+  border-radius:1px;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{transform:scaleX(1)}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+}
+.nav-icon-btn{
+  width:32px;height:32px;
+  border-radius:50%;
+  background:transparent;
+  border:none;
+  color:var(--off);
+  font-size:0.8rem;
+  cursor:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:color 0.2s,background 0.2s;
+  text-decoration:none;
+}
+.nav-icon-btn:hover{color:var(--white);background:rgba(255,255,255,0.08)}
+
+.burger{
+  display:none;
+  background:none;border:none;
+  cursor:none;
+  flex-direction:column;
+  gap:4px;padding:6px;
+}
+.burger span{
+  display:block;width:20px;height:2px;
+  background:var(--off);
+  border-radius:2px;
+  transition:all 0.3s;
+}
+
+/* ── MOBILE MENU ── */
+.mob-menu{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  z-index:5000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2rem;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s;
+}
+.mob-menu.open{opacity:1;pointer-events:all}
+.mob-menu-close{
+  position:absolute;
+  top:1.5rem;right:1.5rem;
+  width:40px;height:40px;
+  border-radius:50%;
+  background:var(--bg4);
+  border:none;
+  color:var(--white);
+  font-size:1rem;
+  cursor:none;
+  display:flex;align-items:center;justify-content:center;
+}
+.mob-nav-item{
+  font-family:var(--font-display);
+  font-size:clamp(2.5rem,8vw,4rem);
+  font-weight:700;
+  color:var(--off);
+  text-decoration:none;
+  transition:color 0.2s;
+  letter-spacing:-0.02em;
+}
+.mob-nav-item:hover{color:var(--green)}
+.mob-socials{
+  display:flex;gap:1.5rem;margin-top:2rem;
+}
+.mob-socials a{
+  color:var(--dim);
+  font-size:1.1rem;
+  text-decoration:none;
+  transition:color 0.2s;
+}
+.mob-socials a:hover{color:var(--green)}
+
+/* ── PAGE SHELL ── */
+.page{
+  position:relative;
+  z-index:10;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── HERO ── */
+.hero{
+  flex:1;
+  display:flex;
+  align-items:flex-end;
+  padding:0 2.5rem 4rem;
+  min-height:100vh;
+  position:relative;
+}
+
+.hero-inner{
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:flex-end;
+  gap:4rem;
+}
+
+/* Left: text block */
+.hero-text{animation:enterLeft 1s 0.1s both}
+@keyframes enterLeft{
+  from{opacity:0;transform:translateX(-40px)}
+  to{opacity:1;transform:translateX(0)}
+}
+
+.hero-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  background:var(--green);
+  color:var(--bg);
+  padding:0.3rem 0.9rem;
+  border-radius:99px;
+  font-size:0.65rem;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:1.2rem;
+}
+.hero-chip::before{
+  content:'';
+  width:6px;height:6px;
+  background:var(--bg);
+  border-radius:50%;
+  animation:blink 1.5s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+.hero-h1{
+  font-family:var(--font-display);
+  font-size:clamp(3.5rem,8vw,7.5rem);
+  font-weight:700;
+  line-height:0.9;
+  letter-spacing:-0.04em;
+  color:var(--white);
+  margin-bottom:1.4rem;
+}
+.hero-h1 .outline-text{
+  -webkit-text-stroke:1.5px rgba(255,255,255,0.25);
+  color:transparent;
+}
+.hero-h1 .green-text{color:var(--green)}
+
+.hero-sub{
+  font-family:var(--font);
+  font-size:1rem;
+  font-weight:400;
+  color:var(--off);
+  line-height:1.7;
+  max-width:380px;
+  margin-bottom:2.5rem;
+}
+
+/* Right: CTA cards stack */
+.hero-ctas{
+  display:flex;
+  flex-direction:column;
+  gap:0.85rem;
+  animation:enterRight 1s 0.25s both;
+}
+@keyframes enterRight{
+  from{opacity:0;transform:translateX(40px)}
+  to{opacity:1;transform:translateX(0)}
+}
+
+/* ── BIG CTA CARDS ── */
+.cta-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:1.2rem;
+  padding:1.3rem 1.4rem;
+  background:var(--bg3);
+  border-radius:8px;
+  text-decoration:none;
+  overflow:hidden;
+  transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+             background 0.3s;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.cta-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,var(--green-dim) 0%,transparent 70%);
+  opacity:0;
+  transition:opacity 0.35s;
+}
+.cta-card:hover{
+  transform:scale(1.025) translateX(6px);
+  background:var(--bg4);
+}
+.cta-card:hover::before{opacity:1}
+
+.cta-card-cover{
+  width:64px;height:64px;
+  border-radius:6px;
+  background:var(--bg4);
+  flex-shrink:0;
+  overflow:hidden;
+  position:relative;
+}
+.cta-card-cover img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:top center;
+}
+.cta-card-cover-icon{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;
+  color:var(--green);
+  background:var(--green-dim);
+}
+
+.cta-card-body{flex:1;min-width:0}
+.cta-card-type{
+  font-size:0.62rem;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--green);
+  margin-bottom:0.2rem;
+}
+.cta-card-title{
+  font-family:var(--font-display);
+  font-size:1.15rem;
+  font-weight:700;
+  color:var(--white);
+  letter-spacing:-0.01em;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.cta-card-meta{
+  font-size:0.72rem;
+  color:var(--off);
+  margin-top:0.2rem;
+}
+
+.cta-card-play{
+  width:40px;height:40px;
+  border-radius:50%;
+  background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  color:var(--bg);
+  font-size:0.75rem;
+  transform:translateX(10px);
+  opacity:0;
+  transition:opacity 0.3s,transform 0.3s;
+  padding-left:2px;
+}
+.cta-card:hover .cta-card-play{
+  opacity:1;
+  transform:translateX(0);
+}
+.cta-card:active .cta-card-play{
+  transform:scale(0.92);
+}
+
+/* ── SCROLL SECTION ── */
+.scroll-section{
+  position:relative;
+  z-index:10;
+  padding:0 2.5rem 6rem;
+  background:var(--bg);
+}
+
+.section-header{
+  max-width:1100px;
+  margin:0 auto 1.8rem;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:1rem;
+  padding-top:4rem;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.section-title{
+  font-family:var(--font-display);
+  font-size:1.5rem;
+  font-weight:700;
+  color:var(--white);
+  letter-spacing:-0.02em;
+}
+.section-see-all{
+  font-size:0.72rem;
+  font-weight:600;
+  color:var(--off);
+  text-decoration:none;
+  letter-spacing:0.04em;
+  transition:color 0.2s;
+}
+.section-see-all:hover{color:var(--white);text-decoration:underline}
+
+/* ── GRID CARDS ── */
+.grid-row{
+  max-width:1100px;
+  margin:0 auto;
+  display:grid;
+  gap:1.2rem;
+}
+.grid-row.cols-4{grid-template-columns:repeat(4,1fr)}
+.grid-row.cols-3{grid-template-columns:repeat(3,1fr)}
+.grid-row.cols-2{grid-template-columns:repeat(2,1fr)}
+
+.grid-card{
+  background:var(--bg3);
+  border-radius:8px;
+  padding:1rem;
+  text-decoration:none;
+  transition:background 0.2s;
+  display:block;
+  position:relative;
+  overflow:hidden;
+}
+.grid-card:hover{background:var(--bg4)}
+
+.grid-card-img-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio:1/1;
+  border-radius:4px;
+  overflow:hidden;
+  margin-bottom:0.9rem;
+  background:var(--bg4);
+}
+.grid-card-img-wrap img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:top center;
+  transition:transform 0.4s;
+}
+.grid-card:hover .grid-card-img-wrap img{transform:scale(1.04)}
+
+.grid-card-hover-play{
+  position:absolute;
+  bottom:8px;right:8px;
+  width:46px;height:46px;
+  border-radius:50%;
+  background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--bg);
+  font-size:0.9rem;
+  box-shadow:0 8px 24px rgba(0,0,0,0.5);
+  transform:translateY(8px);
+  opacity:0;
+  transition:opacity 0.3s,transform 0.3s;
+  padding-left:2px;
+}
+.grid-card:hover .grid-card-hover-play{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.grid-card-title{
+  font-family:var(--font);
+  font-size:0.88rem;
+  font-weight:700;
+  color:var(--white);
+  margin-bottom:0.3rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.grid-card-sub{
+  font-size:0.72rem;
+  color:var(--off);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* Circular cover for artists */
+.grid-card-img-wrap.circle{border-radius:50%}
+
+/* ── ABOUT PILL SECTION ── */
+.about-block{
+  max-width:1100px;
+  margin:0 auto;
+  margin-top:4rem;
+  padding:2.5rem;
+  background:var(--bg3);
+  border-radius:12px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:center;
+  border:1px solid rgba(255,255,255,0.05);
+  position:relative;
+  overflow:hidden;
+}
+.about-block::before{
+  content:'';
+  position:absolute;
+  top:-80px;right:-80px;
+  width:300px;height:300px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--green-dim) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+.about-label{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  font-size:0.65rem;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--green);
+  margin-bottom:1.2rem;
+}
+.about-label::before{
+  content:'';
+  width:24px;height:2px;
+  background:var(--green);
+  border-radius:1px;
+}
+
+.about-heading{
+  font-family:var(--font-display);
+  font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:700;
+  line-height:1.05;
+  letter-spacing:-0.03em;
+  color:var(--white);
+  margin-bottom:1.2rem;
+}
+.about-heading .italic{font-style:italic;color:var(--green)}
+
+.about-body{
+  font-size:0.9rem;
+  font-weight:400;
+  color:var(--off);
+  line-height:1.8;
+  margin-bottom:1.5rem;
+}
+
+.about-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.5rem;
+}
+.about-tag{
+  padding:0.4rem 0.9rem;
+  border-radius:99px;
+  background:var(--bg4);
+  font-size:0.68rem;
+  font-weight:600;
+  color:var(--off);
+  letter-spacing:0.04em;
+  border:1px solid rgba(255,255,255,0.08);
+  transition:all 0.2s;
+}
+.about-tag:hover{background:var(--green-dim);color:var(--green);border-color:var(--green-mid)}
+
+.about-right{display:flex;flex-direction:column;gap:1rem}
+
+.about-stat-card{
+  background:var(--bg4);
+  border-radius:8px;
+  padding:1.2rem 1.4rem;
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  border:1px solid rgba(255,255,255,0.05);
+  transition:border-color 0.2s;
+}
+.about-stat-card:hover{border-color:rgba(29,185,84,0.3)}
+.about-stat-icon{
+  width:44px;height:44px;
+  border-radius:8px;
+  background:var(--green-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+  color:var(--green);
+  flex-shrink:0;
+}
+.about-stat-val{
+  font-family:var(--font-display);
+  font-size:1.6rem;
+  font-weight:700;
+  color:var(--white);
+  line-height:1;
+  margin-bottom:0.2rem;
+  letter-spacing:-0.03em;
+}
+.about-stat-lbl{
+  font-size:0.68rem;
+  font-weight:500;
+  color:var(--off);
+  letter-spacing:0.04em;
+}
+
+/* ── SOCIAL ROW ── */
+.socials-section{
+  max-width:1100px;
+  margin:0 auto;
+  margin-top:4rem;
+  padding-top:3rem;
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1.4rem;
+}
+.socials-label{
+  font-size:0.65rem;
+  font-weight:700;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+.socials-row{
+  display:flex;
+  gap:0.6rem;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.social-btn{
+  display:flex;align-items:center;gap:0.55rem;
+  padding:0.6rem 1.2rem;
+  border-radius:99px;
+  background:var(--bg3);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--off);
+  font-family:var(--font);
+  font-size:0.72rem;
+  font-weight:600;
+  text-decoration:none;
+  letter-spacing:0.02em;
+  transition:all 0.2s;
+}
+.social-btn i{font-size:0.85rem}
+.social-btn:hover{
+  background:var(--bg4);
+  color:var(--white);
+  border-color:rgba(255,255,255,0.16);
+  transform:translateY(-2px);
+}
+.social-btn.spotify:hover{background:rgba(29,185,84,0.15);color:var(--green);border-color:var(--green-mid)}
+.social-btn.ig:hover{background:rgba(225,48,108,0.1);color:#e1306c;border-color:rgba(225,48,108,0.3)}
+.social-btn.yt:hover{background:rgba(255,0,0,0.1);color:#ff0000;border-color:rgba(255,0,0,0.25)}
+.social-btn.tt:hover{background:rgba(105,201,208,0.1);color:#69c9d0;border-color:rgba(105,201,208,0.25)}
+.social-btn.tw:hover{background:rgba(255,255,255,0.08);color:var(--white);border-color:rgba(255,255,255,0.2)}
+.social-btn.wa:hover{background:rgba(37,211,102,0.1);color:#25d366;border-color:rgba(37,211,102,0.3)}
+.social-btn.sc:hover{background:rgba(255,85,0,0.1);color:#ff5500;border-color:rgba(255,85,0,0.25)}
+
+/* ── SLIDE PROGRESS ── */
+.slide-progress{
+  position:fixed;
+  top:64px;left:0;right:0;
+  height:3px;
+  background:rgba(255,255,255,0.06);
+  z-index:799;
+}
+.slide-progress-bar{
+  height:100%;
+  background:var(--green);
+  width:0%;
+  transition:width 6s linear;
+  border-radius:0 2px 2px 0;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--bg);
+  padding:2rem 2.5rem;
+  border-top:1px solid rgba(255,255,255,0.06);
+  position:relative;
+  z-index:10;
+}
+.footer-inner{
+  max-width:1100px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+.footer-logo{
+  display:flex;align-items:center;gap:0.6rem;
+}
+.footer-logo-mark{
+  width:28px;height:28px;
+  background:var(--green);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.55rem;font-weight:900;
+  color:var(--bg);letter-spacing:0.05em;
+}
+.footer-copy{
+  font-size:0.68rem;
+  color:var(--dim);
+  letter-spacing:0.02em;
+}
+.footer-links{
+  display:flex;gap:1.5rem;
+}
+.footer-links a{
+  font-size:0.68rem;
+  color:var(--dim);
+  text-decoration:none;
+  transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--white)}
+
+/* ── NOW PLAYING BAR ── */
+.now-playing{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:72px;
+  background:rgba(24,24,24,0.96);
+  backdrop-filter:blur(32px);
+  -webkit-backdrop-filter:blur(32px);
+  border-top:1px solid rgba(255,255,255,0.08);
+  z-index:700;
+  display:flex;
+  align-items:center;
+  padding:0 1.5rem;
+  gap:1rem;
+}
+.np-thumb{
+  width:48px;height:48px;
+  border-radius:4px;
+  background:var(--bg4);
+  overflow:hidden;
+  flex-shrink:0;
+}
+.np-thumb img{width:100%;height:100%;object-fit:cover;object-position:top}
+.np-info{flex:1;min-width:0}
+.np-title{
+  font-size:0.78rem;
+  font-weight:600;
+  color:var(--white);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.np-sub{
+  font-size:0.65rem;
+  color:var(--off);
+  margin-top:0.15rem;
+}
+.np-controls{
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  flex-shrink:0;
+}
+.np-ctrl{
+  background:none;border:none;
+  color:var(--off);
+  font-size:0.9rem;
+  cursor:none;
+  transition:color 0.2s;
+}
+.np-ctrl:hover{color:var(--white)}
+.np-play{
+  width:36px;height:36px;
+  border-radius:50%;
+  background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--bg);
+  font-size:0.8rem;
+  cursor:none;
+  border:none;
+  transition:transform 0.2s,background 0.2s;
+  padding-left:2px;
+}
+.np-play:hover{transform:scale(1.07);background:var(--green-bright)}
+.np-wave{
+  display:flex;align-items:center;gap:2px;height:20px;
+  flex-shrink:0;
+}
+.np-wave span{
+  display:block;
+  width:3px;
+  background:var(--green);
+  border-radius:2px;
+  animation:wave 1.2s ease-in-out infinite;
+}
+.np-wave span:nth-child(1){height:6px;animation-delay:0s}
+.np-wave span:nth-child(2){height:14px;animation-delay:0.15s}
+.np-wave span:nth-child(3){height:10px;animation-delay:0.3s}
+.np-wave span:nth-child(4){height:18px;animation-delay:0.45s}
+.np-wave span:nth-child(5){height:8px;animation-delay:0.6s}
+@keyframes wave{
+  0%,100%{transform:scaleY(0.5)}
+  50%{transform:scaleY(1)}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .burger{display:flex}
+  .hero-inner{grid-template-columns:1fr;gap:3rem}
+  .hero-h1{font-size:clamp(3rem,12vw,5.5rem)}
+  .hero-ctas{max-width:480px}
+  .grid-row.cols-4{grid-template-columns:repeat(2,1fr)}
+  .about-block{grid-template-columns:1fr}
+  .about-block::before{display:none}
+  .scroll-section{padding:0 1.5rem 8rem}
+  .hero{padding:0 1.5rem 3rem}
+}
+@media(max-width:560px){
+  nav{padding:0 1.2rem}
+  .grid-row.cols-3{grid-template-columns:repeat(2,1fr)}
+  .hero-h1{font-size:clamp(2.8rem,13vw,4.5rem)}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:0.6rem}
+  .now-playing{padding:0 1rem}
+  .socials-row{gap:0.45rem}
+  .social-btn{padding:0.5rem 0.9rem;font-size:0.65rem}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- SLIDE PROGRESS -->
+<div class="slide-progress"><div class="slide-progress-bar" id="progressBar"></div></div>
+
+<!-- BG SLIDESHOW -->
+<div class="bg-stage" id="bgStage">
+  <div class="bg-panel active">
+    <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/main.jpg" alt="">
+  </div>
+  <div class="bg-panel">
+    <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/bwf.jpg" alt="">
+  </div>
+  <div class="bg-panel">
+    <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/bwbm.jpg" alt="">
+  </div>
+  <div class="bg-panel">
+    <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/3.jpg" alt="">
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">444</div>
+    <span class="nav-logo-text">Industry<span>.</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#discover">Discover</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="https://444brand.vercel.app" target="_blank">Shop</a></li>
+    <li><a href="https://444music-distribution.vercel.app" target="_blank">Music</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://instagram.com" target="_blank" class="nav-icon-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://twitter.com" target="_blank" class="nav-icon-btn" title="X"><i class="fab fa-x-twitter"></i></a>
+    <button class="burger" id="burgerBtn"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-menu-close" id="mobClose"><i class="fas fa-times"></i></button>
+  <a href="#discover" class="mob-nav-item" onclick="closeMob()">Discover</a>
+  <a href="https://444brand.vercel.app" target="_blank" class="mob-nav-item">444 Shop</a>
+  <a href="https://444music-distribution.vercel.app" target="_blank" class="mob-nav-item">444 Music</a>
+  <a href="#about" class="mob-nav-item" onclick="closeMob()">About</a>
+  <div class="mob-socials">
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://twitter.com" target="_blank"><i class="fab fa-x-twitter"></i></a>
+    <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://soundcloud.com" target="_blank"><i class="fab fa-soundcloud"></i></a>
+    <a href="https://spotify.com" target="_blank"><i class="fab fa-spotify"></i></a>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div class="hero-text">
+        <div class="hero-chip">Now live</div>
+        <h1 class="hero-h1">
+          <span class="green-text">444</span><br>
+          <span class="outline-text">Industry</span>
+        </h1>
+        <p class="hero-sub">Two worlds. One vision. Ghana's premium streetwear label and Africa's forward-thinking music distribution engine — built for those who move culture.</p>
+      </div>
+
+      <div class="hero-ctas">
+
+        <a href="https://444brand.vercel.app" target="_blank" class="cta-card">
+          <div class="cta-card-cover">
+            <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/main.jpg" alt="444 Shop">
+          </div>
+          <div class="cta-card-body">
+            <p class="cta-card-type">Fashion</p>
+            <p class="cta-card-title">444 Shop</p>
+            <p class="cta-card-meta">Luxury Streetwear · Ghana</p>
+          </div>
+          <div class="cta-card-play"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <a href="https://444music-distribution.vercel.app" target="_blank" class="cta-card">
+          <div class="cta-card-cover">
+            <div class="cta-card-cover-icon"><i class="fas fa-music"></i></div>
+          </div>
+          <div class="cta-card-body">
+            <p class="cta-card-type">Music</p>
+            <p class="cta-card-title">444 Distribution</p>
+            <p class="cta-card-meta">Get on every platform · Fast</p>
+          </div>
+          <div class="cta-card-play"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <a href="https://444brand.vercel.app/lookbok.html" target="_blank" class="cta-card">
+          <div class="cta-card-cover">
+            <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/bwf.jpg" alt="Lookbook">
+          </div>
+          <div class="cta-card-body">
+            <p class="cta-card-type">Editorial</p>
+            <p class="cta-card-title">Lookbook S.25</p>
+            <p class="cta-card-meta">Visual Campaign · Season 2025</p>
+          </div>
+          <div class="cta-card-play"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCOVER SECTION -->
+  <section class="scroll-section" id="discover">
+
+    <div class="section-header">
+      <h2 class="section-title">Featured Drops</h2>
+      <a href="https://444brand.vercel.app" target="_blank" class="section-see-all">See all</a>
+    </div>
+    <div class="grid-row cols-4">
+      <a href="https://444brand.vercel.app" target="_blank" class="grid-card">
+        <div class="grid-card-img-wrap">
+          <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/main.jpg" alt="Drop">
+          <div class="grid-card-hover-play"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <p class="grid-card-title">Season Drop 01</p>
+        <p class="grid-card-sub">444 Brand · Streetwear</p>
+      </a>
+      <a href="https://444brand.vercel.app" target="_blank" class="grid-card">
+        <div class="grid-card-img-wrap">
+          <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/bwf.jpg" alt="Drop">
+          <div class="grid-card-hover-play"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <p class="grid-card-title">Angel 444 Edit</p>
+        <p class="grid-card-sub">444 Brand · Editorial</p>
+      </a>
+      <a href="https://444brand.vercel.app" target="_blank" class="grid-card">
+        <div class="grid-card-img-wrap">
+          <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/bwbm.jpg" alt="Drop">
+          <div class="grid-card-hover-play"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <p class="grid-card-title">Monochrome Rebellion</p>
+        <p class="grid-card-sub">444 Brand · New Drop</p>
+      </a>
+      <a href="https://444brand.vercel.app" target="_blank" class="grid-card">
+        <div class="grid-card-img-wrap">
+          <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/3.jpg" alt="Drop">
+          <div class="grid-card-hover-play"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <p class="grid-card-title">Culture Series</p>
+        <p class="grid-card-sub">444 Brand · Limited</p>
+      </a>
+    </div>
+
+    <div class="section-header">
+      <h2 class="section-title">Music Services</h2>
+      <a href="https://444music-distribution.vercel.app" target="_blank" class="section-see-all">Distribute</a>
+    </div>
+    <div class="grid-row cols-3">
+      <a href="https://444music-distribution.vercel.app" target="_blank" class="grid-card">
+        <div class="grid-card-img-wrap" style="border-radius:50%">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#1db954,#0a8f3c);display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(0,0,0,0.6)"><i class="fab fa-spotify"></i></div>
+          <div class="grid-card-hover-play"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <p class="grid-card-title">Global Distribution</p>
+        <p class="grid-card-sub">All major platforms</p>
+      </a>
+      <a href="https://444music-distribution.vercel.app" target="_blank" class="grid-card">
+        <div class="grid-card-img-wrap" style="border-radius:50%">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#fc3c44,#aa2222);display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(0,0,0,0.5)"><i class="fab fa-apple"></i></div>
+          <div class="grid-card-hover-play"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <p class="grid-card-title">Apple Music Ready</p>
+        <p class="grid-card-sub">Fast delivery · 48hrs</p>
+      </a>
+      <a href="https://444music-distribution.vercel.app" target="_blank" class="grid-card">
+        <div class="grid-card-img-wrap" style="border-radius:50%">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#ff5500,#c84000);display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(0,0,0,0.5)"><i class="fab fa-soundcloud"></i></div>
+          <div class="grid-card-hover-play"><i class="fas fa-arrow-right"></i></div>
+        </div>
+        <p class="grid-card-title">Artist Support</p>
+        <p class="grid-card-sub">African artists first</p>
+      </a>
+    </div>
+
+    <!-- ABOUT BLOCK -->
+    <div class="about-block" id="about">
+      <div>
+        <p class="about-label">444 Industry</p>
+        <h2 class="about-heading">Built on<br><span class="italic">culture.</span><br>Powered by sound.</h2>
+        <p class="about-body">444 Industry is a full-spectrum creative company operating at the frontier of fashion and music. Born in Ghana, built for the world — we create premium streetwear and power music distribution for African artists who are ready to go global.</p>
+        <div class="about-tags">
+          <span class="about-tag">Luxury Streetwear</span>
+          <span class="about-tag">Music Distribution</span>
+          <span class="about-tag">Ghana</span>
+          <span class="about-tag">Culture</span>
+          <span class="about-tag">Global</span>
+          <span class="about-tag">Independent</span>
+        </div>
+      </div>
+      <div class="about-right">
+        <div class="about-stat-card">
+          <div class="about-stat-icon"><i class="fas fa-tshirt"></i></div>
+          <div>
+            <p class="about-stat-val">444 Brand</p>
+            <p class="about-stat-lbl">Premium luxury streetwear · Ghana</p>
+          </div>
+        </div>
+        <div class="about-stat-card">
+          <div class="about-stat-icon"><i class="fas fa-compact-disc"></i></div>
+          <div>
+            <p class="about-stat-val">444 Music</p>
+            <p class="about-stat-lbl">Independent distribution · All platforms</p>
+          </div>
+        </div>
+        <div class="about-stat-card">
+          <div class="about-stat-icon"><i class="fas fa-globe-africa"></i></div>
+          <div>
+            <p class="about-stat-val">Global</p>
+            <p class="about-stat-lbl">African-born · Worldwide reach</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIALS -->
+    <div class="socials-section">
+      <p class="socials-label">Follow 444 Industry</p>
+      <div class="socials-row">
+        <a href="https://instagram.com" target="_blank" class="social-btn ig"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="https://twitter.com" target="_blank" class="social-btn tw"><i class="fab fa-x-twitter"></i> X / Twitter</a>
+        <a href="https://tiktok.com" target="_blank" class="social-btn tt"><i class="fab fa-tiktok"></i> TikTok</a>
+        <a href="https://youtube.com" target="_blank" class="social-btn yt"><i class="fab fa-youtube"></i> YouTube</a>
+        <a href="https://open.spotify.com" target="_blank" class="social-btn spotify"><i class="fab fa-spotify"></i> Spotify</a>
+        <a href="https://soundcloud.com" target="_blank" class="social-btn sc"><i class="fab fa-soundcloud"></i> SoundCloud</a>
+        <a href="https://wa.me/233530399523" target="_blank" class="social-btn wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-mark">444</div>
+      <span class="footer-copy">© 2025 444 Industry. All rights reserved.</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://444brand.vercel.app" target="_blank">Shop</a>
+      <a href="https://444music-distribution.vercel.app" target="_blank">Music</a>
+      <a href="https://444brand.vercel.app/contact.html" target="_blank">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<!-- NOW PLAYING BAR (decorative/ambient) -->
+<div class="now-playing">
+  <div class="np-thumb">
+    <img src="https://raw.githubusercontent.com/fourfourfourbrand444/444brand/main/main.jpg" alt="444">
+  </div>
+  <div class="np-info">
+    <p class="np-title">444 Industry — Culture Drop 2025</p>
+    <p class="np-sub">444 Brand · Ghana</p>
+  </div>
+  <div class="np-wave">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="np-controls">
+    <button class="np-ctrl"><i class="fas fa-shuffle"></i></button>
+    <button class="np-ctrl"><i class="fas fa-backward-step"></i></button>
+    <button class="np-play" id="npPlayBtn"><i class="fas fa-play" id="npIcon"></i></button>
+    <button class="np-ctrl"><i class="fas fa-forward-step"></i></button>
+    <button class="np-ctrl"><i class="fas fa-repeat"></i></button>
+  </div>
+</div>
+
+<script>
+// ── CURSOR ───────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.addEventListener('mouseleave', () => { cursor.style.opacity='0'; ring.style.opacity='0'; });
+document.addEventListener('mouseenter', () => { cursor.style.opacity='1'; ring.style.opacity='1'; });
+
+// ── SLIDESHOW ────────────────────────────────────────────────
+const panels = document.querySelectorAll('.bg-panel');
+const progressBar = document.getElementById('progressBar');
+let ci = 0, slideDuration = 6000;
+let progressStart = null;
+
+function startProgress(ts) {
+  progressStart = ts;
+  function step(t) {
+    const elapsed = t - progressStart;
+    const pct = Math.min((elapsed / slideDuration) * 100, 100);
+    progressBar.style.width = pct + '%';
+    if (elapsed < slideDuration) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function goSlide(n) {
+  panels[ci].classList.remove('active');
+  ci = n % panels.length;
+  panels[ci].classList.add('active');
+  progressBar.style.transition = 'none';
+  progressBar.style.width = '0%';
+  void progressBar.offsetWidth;
+  progressBar.style.transition = `width ${slideDuration}ms linear`;
+  progressBar.style.width = '100%';
+  // Sync now-playing thumb
+  const imgs = document.querySelectorAll('.bg-panel img');
+  const npThumb = document.querySelector('.np-thumb img');
+  if (imgs[ci] && npThumb) npThumb.src = imgs[ci].src;
+}
+
+// Start
+progressBar.style.transition = `width ${slideDuration}ms linear`;
+progressBar.style.width = '100%';
+setInterval(() => goSlide(ci + 1), slideDuration);
+
+// ── MOBILE MENU ──────────────────────────────────────────────
+const burgerBtn = document.getElementById('burgerBtn');
+const mobMenu   = document.getElementById('mobMenu');
+const mobClose  = document.getElementById('mobClose');
+
+function openMob() { mobMenu.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMob() { mobMenu.classList.remove('open'); document.body.style.overflow=''; }
+window.closeMob = closeMob;
+burgerBtn.addEventListener('click', openMob);
+mobClose.addEventListener('click', closeMob);
+
+// ── NOW PLAYING TOGGLE ───────────────────────────────────────
+let playing = false;
+const npPlayBtn = document.getElementById('npPlayBtn');
+const npIcon    = document.getElementById('npIcon');
+const npWave    = document.querySelector('.np-wave');
+npPlayBtn.addEventListener('click', () => {
+  playing = !playing;
+  npIcon.className = playing ? 'fas fa-pause' : 'fas fa-play';
+  npWave.style.opacity = playing ? '1' : '0.3';
+});
+
+// ── INTERSECTION OBSERVER for grid cards ────────────────────
+const cards = document.querySelectorAll('.grid-card, .about-stat-card, .cta-card');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = `enterUp 0.5s ${i * 0.07}s both`;
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+const style = document.createElement('style');
+style.textContent = '@keyframes enterUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}';
+document.head.appendChild(style);
+cards.forEach(c => { c.style.opacity = '0'; io.observe(c); });
+
+// ── PARALLAX HERO TEXT ───────────────────────────────────────
+const heroText = document.querySelector('.hero-text');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (heroText) heroText.style.transform = `translateY(${y * 0.2}px)`;
+  const bgStage = document.getElementById('bgStage');
+  if (bgStage) bgStage.style.transform = `translateY(${y * 0.35}px)`;
+}, { passive: true });
+</script>
+</body>
+</html>
